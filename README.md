@@ -1,4 +1,4 @@
-# KeepStart
+# KeepTrack
 
 This project is intended to help people keep track of their monthly spending by setting daily and monthly maxes. With the use of a monthly calendar and dashboard, you can spend your money more diligently!
 
