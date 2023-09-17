@@ -1,18 +1,24 @@
+//NOTE THAT THEIR ARE
 //months are 0-11
 
-function getFirstDayNameOfMonth(monthInt, yearInt) {
+function getFirstDayNameOfMonth(yearInt, monthInt) {
   //zero based
   return new Date(yearInt, monthInt, 1).toLocaleString("en-us", {
     weekday: "short",
   });
 }
 
-function getMonthLength(monthInt, yearInt) {
+function getMonthDays(yearInt, monthInt) {
   //returns the last day of the current month by asking for the 0'th day
-  return new Date(yearInt, monthInt + 1, 0).getDate();
+  const MonthLength = new Date(yearInt, monthInt + 1, 0).getDate();
+  const MonthArr = [];
+  for (let i = 1; i <= MonthLength; i++) {
+    MonthArr.push(i);
+  }
+  return MonthArr;
 }
 
-function getPreviousMonthDays(firstDayOfMonthInt, currMonthInt, yearInt) {
+function getPreviousMonthDays(firstDayOfMonthInt, yearInt, currMonthInt) {
   //returns array of greyed out days of the previous month
   //if first day is Wednesday => [31,30,29] (sun, mon, tues)
 
@@ -21,7 +27,7 @@ function getPreviousMonthDays(firstDayOfMonthInt, currMonthInt, yearInt) {
   const prevDays = [];
 
   //if day is wed => first day => 4 => return [31,30,29]
-  for (let i = firstDayOfMonthInt; i > 0; i--) {
+  for (let i = firstDayOfMonthInt - 1; i > 0; i--) {
     prevDays.push(prevMonthMax);
     prevMonthMax--;
   }
@@ -48,7 +54,7 @@ function getCurrMonth() {
 
 export {
   getFirstDayNameOfMonth,
-  getMonthLength,
+  getMonthDays,
   getCurrMonth,
   getPreviousMonthDays,
 };
