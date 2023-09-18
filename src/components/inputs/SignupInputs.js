@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../css/App.css";
-import Tooltip from "../ToolTip";
+import Tooltip from "../tooltips/ToolTip";
 
 const SignupInputs = ({ children }) => {
+  const [showToolTip, setShowToolTip] = useState({
+    monthlySpending: false,
+    dailySpending: false,
+  });
+
   return (
     <form className="login-input-wrapper" method="GET" action="/">
       <div className="login-group">
@@ -30,7 +35,18 @@ const SignupInputs = ({ children }) => {
             src="/Images/info-icon.svg"
             className="info-icon"
             alt="information icon for monthly spending allownace"
+            onClick={() => {
+              setShowToolTip((prev) => {
+                return { ...prev, monthlySpending: !prev.monthlySpending };
+              });
+            }}
           />
+          {showToolTip.monthlySpending && (
+            <Tooltip
+              text="You can change this number later, so 
+            don’t worry if you’re not sure "
+            />
+          )}
         </div>
         <input
           type="number"
@@ -47,8 +63,19 @@ const SignupInputs = ({ children }) => {
             src="/Images/info-icon.svg"
             className="info-icon"
             alt="information icon for daily spending allownace"
+            onClick={() => {
+              setShowToolTip((prev) => {
+                return { ...prev, dailySpending: !prev.dailySpending };
+              });
+            }}
           />
-          <Tooltip text="tool-tip text" />
+          {showToolTip.dailySpending && (
+            <Tooltip
+              text="This number dictates the highest amount
+of money you would be okay with spending
+in one day."
+            />
+          )}
         </div>
         <input
           type="number"
