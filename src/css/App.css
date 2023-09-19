@@ -431,3 +431,7 @@ footer * {
 .grey-bg {
   background: linear-gradient(var(--grey), white);
 }
+
+.error {
+  color: firebrick !important;
+}

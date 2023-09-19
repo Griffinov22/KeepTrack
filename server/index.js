@@ -15,6 +15,18 @@ app.get("/getUsers", async (req, res) => {
   res.json(users);
 });
 
+app.post("/login", async ({ body }, res) => {
+  const foundUser = await UserModel.findOne({
+    username: body.username,
+    password: body.password,
+  });
+  if (foundUser) {
+    res.json(foundUser);
+  } else {
+    res.json({ error: "could not find profile with that username / password" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("listening on port http://localhost:3001");
 });
