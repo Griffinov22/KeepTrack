@@ -1,9 +1,17 @@
 import React from "react";
+import { redirect, useLocation } from "react-router-dom";
 import "../css/App.css";
 import Calendar from "../components/Calendar";
 import Stats from "../components/Stats";
 
 const Dashboard = () => {
+  const location = useLocation().state || undefined;
+  if (!location) {
+    console.log("no user found. Redirecting.....");
+  } else {
+    console.log("user of");
+  }
+
   return (
     <div className="dashboard-wrapper">
       <div className="flex-row-ends dash-header no-wrap">

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 import "../../css/App.css";
 import { checkLogin } from "../../helpers/ServerHelpers";
 
 const LoginInputs = ({ children }) => {
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -24,6 +26,9 @@ const LoginInputs = ({ children }) => {
     if (data.error) {
       //error -- show validation error
       setShowError(true);
+    } else {
+      //go to dashboard with data
+      navigate("/dashboard", { state: { username: data.username } });
     }
   };
 
