@@ -1,11 +1,10 @@
 //NOTE THAT THEIR ARE
 //months are 0-11
 
-function getFirstDayNameOfMonth(yearInt, monthInt) {
-  //zero based
-  return new Date(yearInt, monthInt, 1).toLocaleString("en-us", {
-    weekday: "short",
-  });
+function getFirstDayOfMonth(yearInt, monthInt) {
+  //returns day of week in 0-based index
+  //adding one to make it return 1-7
+  return new Date(yearInt, monthInt, 1).getDay() + 1;
 }
 
 function getMonthDays(yearInt, monthInt) {
@@ -52,9 +51,4 @@ function getCurrMonth() {
   return months[new Date().getMonth()];
 }
 
-export {
-  getFirstDayNameOfMonth,
-  getMonthDays,
-  getCurrMonth,
-  getPreviousMonthDays,
-};
+export { getFirstDayOfMonth, getMonthDays, getCurrMonth, getPreviousMonthDays };

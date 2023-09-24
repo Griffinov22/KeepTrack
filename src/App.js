@@ -8,6 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import SignUpPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
+import Unauthorized from "./pages/Unauthorized";
 
 function App() {
   //has 3 states -1,0,1 for false, pending, and true states
@@ -22,6 +23,8 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path={"/unauthorized"} element={<Unauthorized />} />
+          <Route path={"*"} element={<Unauthorized />} />
         </Routes>
       </main>
       <Footer />

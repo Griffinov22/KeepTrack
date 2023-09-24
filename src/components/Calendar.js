@@ -1,28 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/App.css";
 import {
   getCurrMonth,
-  getFirstDayNameOfMonth,
+  getFirstDayOfMonth,
   getMonthDays,
   getPreviousMonthDays,
 } from "../helpers/CalendarHelper";
 
-const Calendar = () => {
-  const todaysDate = new Date();
-  const currMonth = getCurrMonth();
-  const daysInMonth = getMonthDays(
-    todaysDate.getFullYear(),
-    todaysDate.getMonth()
-  );
+const Calendar = ({ currMonthData, prevMonthData, nextMonthData }) => {
+  const currDate = new Date();
+  const currMonthString = getCurrMonth();
+  const daysInMonth = getMonthDays(currDate.getFullYear(), currDate.getMonth());
+
   const prevDays = getPreviousMonthDays(
-    todaysDate.getDay(),
-    todaysDate.getFullYear(),
-    todaysDate.getMonth()
+    getFirstDayOfMonth(currDate.getFullYear(), currDate.getMonth()),
+    currDate.getFullYear(),
+    currDate.getMonth()
   ).reverse();
+
   return (
     <div className="calendar-wrapper">
       <div className="calendar-header">
-        <h3 className="month">{currMonth}</h3>
+        <h3 className="month">{currMonthString}</h3>
       </div>
       <div className="calendar-weeks">
         <h4 className="weeks-header">Sun</h4>
@@ -34,26 +33,30 @@ const Calendar = () => {
         <h4 className="weeks-header">Sat</h4>
       </div>
       <div className="month-container">
-        {prevDays.map((day) => (
-          <div className={"day-container grey"} key={day}>
-            <time className="day">{day}</time>
-            <p className="day-money">0</p>
-          </div>
-        ))}
+        {/* previous month days */}
+        {prevDays.map((day) => {
+          return (
+            <div className={"day-container grey"} key={day}>
+              <time className="day">{day}</time>
+              <p className="day-money">{prevMonthData[day]}</p>
+            </div>
+          );
+        })}
+        {/* curr month days */}
         {daysInMonth.map((day) => (
           <div
             className={
               "day-container " +
-              (todaysDate.getDate() === day
+              (currDate.getDate() === day
                 ? "curr-color"
-                : todaysDate.getDate() < day
+                : currDate.getDate() < day
                 ? "grey-bg"
                 : "")
             }
             key={day}
           >
             <time className="day">{day}</time>
-            <p className="day-money">0</p>
+            <p className="day-money">{currMonthData[day]}</p>
           </div>
         ))}
       </div>

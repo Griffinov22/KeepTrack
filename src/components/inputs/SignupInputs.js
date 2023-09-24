@@ -1,15 +1,41 @@
 import React, { useState } from "react";
 import "../../css/App.css";
 import Tooltip from "../tooltips/ToolTip";
+import { createUser } from "../../helpers/ServerHelpers";
+import { useNavigate } from "react-router-dom";
 
 const SignupInputs = ({ children }) => {
+  const navigate = useNavigate();
   const [showToolTip, setShowToolTip] = useState({
     monthlySpending: false,
     dailySpending: false,
   });
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const [username, password, upperLimit, dailyLimit] =
+      form.querySelectorAll("input");
+    //validation
+    if (
+      username.value &&
+      password.value &&
+      upperLimit.value &&
+      dailyLimit.value
+    ) {
+      const createdUser = await createUser(
+        username.value,
+        password.value,
+        upperLimit.value,
+        dailyLimit.value
+      );
+
+      navigate("/dashboard", { state: createdUser.user });
+    }
+  };
+
   return (
-    <form className="login-input-wrapper" method="GET" action="/">
+    <form className="login-input-wrapper" onSubmit={handleSubmit}>
       <div className="login-group">
         <h4>Username</h4>
         <input
@@ -17,6 +43,7 @@ const SignupInputs = ({ children }) => {
           name="user"
           placeholder="Username..."
           maxLength="12"
+          required
         />
       </div>
       <div className="login-group">
@@ -26,6 +53,7 @@ const SignupInputs = ({ children }) => {
           name="pass"
           placeholder="Password..."
           maxLength="16"
+          required
         />
       </div>
       <div className="login-group">
@@ -53,7 +81,8 @@ const SignupInputs = ({ children }) => {
           name="upperLimit"
           placeholder="Upper Limit..."
           min="0"
-          max="1000"
+          max="50000"
+          required
         />
       </div>
       <div className="login-group">
@@ -82,7 +111,8 @@ in one day."
           name="dailyLimit"
           placeholder="Daily Limit..."
           min="0"
-          max="50000"
+          max="1000"
+          required
         />
       </div>
       {children}

@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const { yearSchema, yearObj } = require("./Year");
+
+const currYear = new Date().getFullYear();
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -8,6 +11,20 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  monthlyLimit: {
+    type: Number,
+    required: true,
+  },
+  dailyLimit: {
+    type: Number,
+    required: true,
+  },
+  data: {
+    [currYear]: {
+      type: Object,
+      default: yearObj,
+    },
   },
 });
 

@@ -28,7 +28,7 @@ const LoginInputs = ({ children }) => {
       setShowError(true);
     } else {
       //go to dashboard with data
-      navigate("/dashboard", { state: { username: data.username } });
+      navigate("/dashboard", { state: data });
     }
   };
 
