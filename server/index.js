@@ -20,7 +20,7 @@ app.post("/login", async ({ body }, res) => {
     const currYear = new Date().getFullYear();
 
     //check if user has this years data property
-    if (Object.hasOwn(foundUser.data, `${currYear}`)) {
+    if (!Object.hasOwn(foundUser.data, `${currYear}`)) {
       await UserModel.updateOne(
         { _id: foundUser._id },
         { $set: { [`data.${currYear}`]: yearObj } },

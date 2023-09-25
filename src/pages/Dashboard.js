@@ -33,7 +33,7 @@ const Dashboard = () => {
       setDailyLimit(location.dailyLimit);
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslcolorint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!loading)
@@ -53,7 +53,7 @@ const Dashboard = () => {
                 ? "fail-color"
                 : currSpent === dailyLimit
                 ? "okay-color"
-                : "green-c"
+                : "green-color"
             }
           >
             {currSpent}
@@ -74,6 +74,7 @@ const Dashboard = () => {
             monthlyLimit={monthlyLimit}
             dailyLimit={dailyLimit}
             currMonthData={currMonthData}
+            currSpent={currSpent}
           />
         </div>
       </div>

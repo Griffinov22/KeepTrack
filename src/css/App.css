@@ -418,7 +418,7 @@ footer * {
 .green-bg {
   background-color: var(--success-100);
 }
-.green-c {
+.green-color {
   color: var(--success-100);
 }
 .fail-bg {
