@@ -34,13 +34,12 @@
 }
 
 main {
-  padding: 2rem;
+  padding: 2rem 1.25rem;
   font-family: var(--bitter);
   width: 100%;
   max-width: 800px;
   margin-inline: auto;
   flex-grow: 1;
-  transition: opacity 200ms ease-in-out;
 }
 
 /* Header */
@@ -234,6 +233,8 @@ footer * {
   background-color: var(--success);
   font-weight: 500;
   font-size: calc(1.2rem + 0.390625vw);
+  /* note this overflow statement */
+  overflow: hidden;
 }
 .day-container:nth-of-type(7n) {
   border: none;
