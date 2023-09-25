@@ -7,8 +7,10 @@
   --success-100: #41ca00;
   --success: #52ff0020;
   --gold: #ffb80020;
+  --gold-95: #ffb80095;
   --gold-100: #ffb800;
   --fail: #ff593420;
+  --fail-100: #ff5934;
   --grey-100: #b3b3b3;
   --grey: #9a9a9a9b;
   --off-white: #f4f6ff;
@@ -422,8 +424,14 @@ footer * {
 .fail-bg {
   background-color: var(--fail);
 }
+.fail-color {
+  color: var(--fail-100);
+}
 .curr-color {
   color: var(--gold-100);
+}
+.okay-color {
+  color: var(--gold-95);
 }
 .primary-bg {
   background-color: var(--primary);

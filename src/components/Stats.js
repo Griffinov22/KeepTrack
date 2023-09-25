@@ -1,7 +1,13 @@
 import React from "react";
 import "../css/App.css";
+import { findMonthlyExpenditure } from "../helpers/DashboardHelpers";
 
-const Stats = () => {
+const Stats = ({ monthlyLimit, dailyLimit, currMonthData }) => {
+  const monthlyExpenditure = findMonthlyExpenditure(
+    JSON.parse(JSON.stringify(currMonthData)),
+    monthlyLimit
+  );
+
   return (
     <div className="stats-content-wrapper">
       <div className="flex-row-ends stats-title">
@@ -18,7 +24,7 @@ const Stats = () => {
       <div className="flex-row-ends pb-1 pt-2">
         <div className="flex-col">
           <h5 className="stats-header">Monthly Expenditure:</h5>
-          <p className="stats-stat">205</p>
+          <p className="stats-stat">{monthlyExpenditure}</p>
         </div>
         <div className="flex-col">
           <h5 className="stats-header">Daily Expenditure:</h5>
@@ -28,7 +34,7 @@ const Stats = () => {
       <div className="flex-row-ends py-1">
         <div className="flex-col">
           <h5 className="stats-header">Monthly Allowance:</h5>
-          <p className="stats-stat">205</p>
+          <p className="stats-stat">{monthlyLimit}</p>
         </div>
         <div className="flex-col">
           <h5 className="stats-header">Daily Mean Allowance:</h5>
