@@ -63,6 +63,7 @@ const Dashboard = () => {
           currMonthData={currMonthData}
           prevMonthData={prevMonthData}
           nextMonthData={nextMonthData}
+          dailyLimit={dailyLimit}
         />
         <div className="cal-width">
           <div className="flex-row-ends py-1">

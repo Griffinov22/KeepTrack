@@ -7,8 +7,14 @@ import {
   getPreviousMonthDays,
 } from "../helpers/CalendarHelper";
 
-const Calendar = ({ currMonthData, prevMonthData, nextMonthData }) => {
+const Calendar = ({
+  currMonthData,
+  prevMonthData,
+  nextMonthData,
+  dayLimit,
+}) => {
   const currDate = new Date();
+  const currDay = currDate.getDate();
   const currMonthString = getCurrMonth();
   const daysInMonth = getMonthDays(currDate.getFullYear(), currDate.getMonth());
 
@@ -43,20 +49,22 @@ const Calendar = ({ currMonthData, prevMonthData, nextMonthData }) => {
           );
         })}
         {/* curr month days */}
-        {daysInMonth.map((day) => (
+        {daysInMonth.map((dayData) => (
+          // background of day
           <div
-            className={
-              "day-container " +
-              (currDate.getDate() === day
-                ? "curr-color"
-                : currDate.getDate() < day
-                ? "grey-bg"
-                : "")
-            }
-            key={day}
+            className={"day-container " + (currDay < dayData ? "grey-bg" : "")}
+            key={dayData}
           >
-            <time className="day">{day}</time>
-            <p className="day-money">{currMonthData[day]}</p>
+            {/* day in month */}
+            <time className="day">{dayData}</time>
+            {/* money */}
+            <p
+              className={
+                "day-money " + (currDay === dayData ? "curr-color" : "")
+              }
+            >
+              {currMonthData[dayData]}
+            </p>
           </div>
         ))}
       </div>

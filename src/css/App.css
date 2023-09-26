@@ -230,7 +230,6 @@ footer * {
   position: relative;
   place-content: center;
   border-right: 0.5px solid black;
-  background-color: var(--success);
   font-weight: 500;
   font-size: calc(1.2rem + 0.390625vw);
   /* note this overflow statement */
