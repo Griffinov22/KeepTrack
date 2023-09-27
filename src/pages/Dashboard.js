@@ -86,7 +86,14 @@ const Dashboard = () => {
                 </form>
               </div>
               <div className="modal-footer">
-                <button className="sm-oval">Close</button>
+                <button
+                  className="sm-oval okay-bg"
+                  onClick={(e) => {
+                    e.target.parentElement.parentElement.close();
+                  }}
+                >
+                  Close
+                </button>
               </div>
             </dialog>
 
