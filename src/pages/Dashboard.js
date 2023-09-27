@@ -20,6 +20,11 @@ const Dashboard = () => {
   const currMonth = currDate.getMonth() + 1;
   const currYear = currDate.getFullYear();
 
+  const handleClickModal = (e) => {
+    const modal = e.target.nextElementSibling;
+    modal.showModal();
+  };
+
   useEffect(() => {
     if (!location) {
       navigate("/unauthorized", { state: { error: "you have not logged in" } });
@@ -39,12 +44,12 @@ const Dashboard = () => {
   if (!loading)
     return (
       <div className="dashboard-wrapper">
-        <div className="flex-row-ends dash-header no-wrap">
+        <div className="flex-row-ends dash-header no-wrap cal-width">
           <p className="grey">Today I've spent:</p>
           {/* date */}
           <p className="bold-6">{currDate.toLocaleDateString()}</p>
         </div>
-        <div className="money-wrapper">
+        <div className="money-wrapper cal-width">
           {/* todays spending */}
           <h2
             id="curr-money"
@@ -67,8 +72,28 @@ const Dashboard = () => {
         />
         <div className="cal-width">
           <div className="flex-row-ends py-1">
-            <button className="sm-oval green-bg">Add Expense</button>
-            <button className="sm-oval primary-bg">Redraw Expense</button>
+            <button className="sm-oval green-bg" onClick={handleClickModal}>
+              Add Expense
+            </button>
+            {/* dialog attached to above button */}
+            <dialog className="modal secondary-bg">
+              <div className="modal-header">
+                <h4>Add Your Expense:</h4>
+              </div>
+              <div className="modal-body">
+                <form className="modal-form">
+                  <input type="number" min="0" />
+                </form>
+              </div>
+              <div className="modal-footer">
+                <button className="sm-oval">Close</button>
+              </div>
+            </dialog>
+
+            <button className="sm-oval primary-bg" onClick={handleClickModal}>
+              Redraw Expense
+            </button>
+            {/* dialog attached to above button */}
           </div>
 
           <Stats

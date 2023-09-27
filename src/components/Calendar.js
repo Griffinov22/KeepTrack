@@ -11,7 +11,7 @@ const Calendar = ({
   currMonthData,
   prevMonthData,
   nextMonthData,
-  dayLimit,
+  dailyLimit,
 }) => {
   const currDate = new Date();
   const currDay = currDate.getDate();
@@ -42,28 +42,33 @@ const Calendar = ({
         {/* previous month days */}
         {prevDays.map((day) => {
           return (
-            <div className={"day-container grey"} key={day}>
+            <div className={"day-container grey-bg"} key={day}>
               <time className="day">{day}</time>
-              <p className="day-money">{prevMonthData[day]}</p>
+              <p className="day-money">{prevMonthData[day] || 0}</p>
             </div>
           );
         })}
         {/* curr month days */}
-        {daysInMonth.map((dayData) => (
-          // background of day
+        {daysInMonth.map((day) => (
+          // background of day // applies colorful background if day has occured or it is the day
           <div
-            className={"day-container " + (currDay < dayData ? "grey-bg" : "")}
-            key={dayData}
+            className={
+              "day-container " +
+              (currDay >= day &&
+                (currMonthData[day] < dailyLimit
+                  ? "success-bg"
+                  : currMonthData[day] >= dailyLimit
+                  ? "fail-bg"
+                  : "")) +
+              (currDay < day ? " grey-bg" : "")
+            }
+            key={day}
           >
             {/* day in month */}
-            <time className="day">{dayData}</time>
+            <time className="day">{day}</time>
             {/* money */}
-            <p
-              className={
-                "day-money " + (currDay === dayData ? "curr-color" : "")
-              }
-            >
-              {currMonthData[dayData]}
+            <p className={"day-money " + (currDay === day ? "curr-color" : "")}>
+              {currMonthData[day]}
             </p>
           </div>
         ))}

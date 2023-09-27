@@ -8,11 +8,11 @@
   --success: #52ff0020;
   --gold: #ffb80020;
   --gold-95: #ffb80095;
-  --gold-100: #ffb800;
+  --gold-100: #f7b100;
   --fail: #ff593420;
   --fail-100: #ff5934;
-  --grey-100: #b3b3b3;
   --grey: #9a9a9a9b;
+  --grey-100: #787878;
   --off-white: #f4f6ff;
   /* fonts */
   --bitter: "Bitter", serif;
@@ -40,6 +40,40 @@ main {
   max-width: 800px;
   margin-inline: auto;
   flex-grow: 1;
+}
+
+.modal {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border: none;
+  padding: 1.75rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 300px;
+}
+.modal h4,
+.modal h3 {
+  color: white;
+  font-weight: 400;
+}
+.modal::backdrop {
+  background: rgba(0 0 0 / 0.25);
+}
+.modal-header {
+  padding-bottom: 1.5rem;
+}
+
+.modal-form {
+  display: grid;
+  place-items: center;
+  margin-bottom: 1.5rem;
+}
+.modal-form input {
+  font-size: 2rem;
+  width: 40%;
+  padding: 0.25rem;
+  text-align: center;
 }
 
 /* Header */
@@ -404,13 +438,15 @@ footer * {
   color: whitesmoke;
 }
 
+.dollar-sign {
+  font-size: 2rem;
+}
+
 .bold-6 {
   font-weight: 600;
 }
 
-.grey {
-  color: var(--grey);
-}
+/* colors */
 
 .success-bg {
   background-color: var(--success);
@@ -436,8 +472,17 @@ footer * {
 .primary-bg {
   background-color: var(--primary);
 }
+.secondary-bg {
+  background-color: var(--secondary);
+}
 .grey-bg {
   background: linear-gradient(var(--grey), white);
+}
+.grey-color {
+  color: var(--grey);
+}
+.darkgrey-color {
+  color: var(--grey-100);
 }
 
 .error {
