@@ -64,12 +64,20 @@ main {
   padding-bottom: 1.5rem;
 }
 
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .modal-form {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
   margin-bottom: 1.5rem;
 }
 .modal-form input {
+  font-family: var(--signika);
   font-size: 2rem;
   width: 40%;
   padding: 0.25rem;
@@ -360,6 +368,9 @@ footer * {
 .pb-1 {
   padding-bottom: 0.5rem;
 }
+.pb-2 {
+  padding-bottom: 1rem;
+}
 
 .flex-row-ends {
   display: flex;
@@ -460,6 +471,9 @@ footer * {
 .fail-bg {
   background-color: var(--fail);
 }
+.fail-100-bg {
+  background-color: var(--fail-100);
+}
 .fail-color {
   color: var(--fail-100);
 }
@@ -483,6 +497,9 @@ footer * {
 }
 .darkgrey-color {
   color: var(--grey-100);
+}
+.white-color {
+  color: white;
 }
 
 .error {

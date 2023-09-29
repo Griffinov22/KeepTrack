@@ -22,6 +22,7 @@ const Dashboard = () => {
 
   const handleClickModal = (e) => {
     const modal = e.target.nextElementSibling;
+    modal.querySelector("form").reset();
     modal.showModal();
   };
 
@@ -40,6 +41,10 @@ const Dashboard = () => {
     }
     // eslcolorint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleCloseModal = (e) => {
+    e.target.closest("dialog").close();
+  };
 
   if (!loading)
     return (
@@ -82,11 +87,24 @@ const Dashboard = () => {
               </div>
               <div className="modal-body">
                 <form className="modal-form">
+                  <span className="dollar-sign white-color">$</span>
                   <input type="number" min="0" />
+                  <p></p>
                 </form>
+                <div className="white-color pb-2">
+                  <p>Recorded on: {currDate.toLocaleDateString()}</p>
+                  <p>Today you have spent: ${currSpent}</p>
+                </div>
               </div>
               <div className="modal-footer">
-                <button className="sm-oval">Close</button>
+                <button className="sm-oval green-bg">Accept</button>
+                <button
+                  type="button"
+                  className="sm-oval fail-100-bg"
+                  onClick={handleCloseModal}
+                >
+                  Close
+                </button>
               </div>
             </dialog>
 
