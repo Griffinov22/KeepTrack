@@ -52,6 +52,20 @@ main {
   width: 100%;
   max-width: 300px;
 }
+.modal[open] {
+  animation: modalFadeAndSlideIn 150ms ease both;
+}
+@keyframes modalFadeAndSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .modal h4,
 .modal h3 {
   color: white;
@@ -479,6 +493,9 @@ footer * {
 }
 .curr-color {
   color: var(--gold-100);
+}
+.okay-bg {
+  background-color: var(--gold-95);
 }
 .okay-color {
   color: var(--gold-95);
