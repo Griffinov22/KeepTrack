@@ -8,6 +8,7 @@ import {
 } from "../helpers/CalendarHelper";
 
 const Calendar = ({
+  currSpent,
   currMonthData,
   prevMonthData,
   nextMonthData,
@@ -68,7 +69,7 @@ const Calendar = ({
             <time className="day">{day}</time>
             {/* money */}
             <p className={"day-money " + (currDay === day ? "curr-color" : "")}>
-              {currMonthData[day]}
+              {day === currDay ? currSpent : currMonthData[day]}
             </p>
           </div>
         ))}

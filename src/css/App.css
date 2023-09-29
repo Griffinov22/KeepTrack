@@ -84,11 +84,10 @@ main {
   align-items: center;
 }
 
-.modal-form {
+.flex-evenly {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin-bottom: 1.5rem;
 }
 .modal-form input {
   font-family: var(--signika);

@@ -46,6 +46,28 @@ const Dashboard = () => {
     e.target.closest("dialog").close();
   };
 
+  const handleSubmitExpense = (e) => {
+    e.preventDefault();
+    const expenseVal = Number.parseInt(e.target.addExpense.value);
+    if (expenseVal > 0) {
+      //updates numbers on screen
+      setCurrSpent((prevVal) => prevVal + expenseVal);
+      //updates calendar background
+      setCurrMonthData((prevData) => {
+        //submit data to backend;
+        const fullDayExpense = prevData[currDay] + expenseVal;
+
+        return {
+          ...prevData,
+          [currDay]: prevData[currDay] + expenseVal,
+        };
+      });
+      //close form
+      e.target.closest("dialog").close();
+      //submit datat change to db
+    }
+  };
+
   if (!loading)
     return (
       <div className="dashboard-wrapper">
@@ -70,6 +92,7 @@ const Dashboard = () => {
           </h2>
         </div>
         <Calendar
+          currSpent={currSpent}
           currMonthData={currMonthData}
           prevMonthData={prevMonthData}
           nextMonthData={nextMonthData}
@@ -86,25 +109,31 @@ const Dashboard = () => {
                 <h4>Add Your Expense:</h4>
               </div>
               <div className="modal-body">
-                <form className="modal-form">
-                  <span className="dollar-sign white-color">$</span>
-                  <input type="number" min="0" />
-                  <p></p>
+                <form className="modal-form" onSubmit={handleSubmitExpense}>
+                  <div className="flex-evenly pb-2">
+                    <span className="dollar-sign white-color">$</span>
+                    <input type="number" min="0" name="addExpense" />
+                    <p></p>
+                  </div>
+
+                  <div className="white-color pb-2">
+                    <p>Recorded on: {currDate.toLocaleDateString()}</p>
+                    <p>Today you have spent: ${currSpent}</p>
+                  </div>
+
+                  <div className="flex-row-ends">
+                    <button className="sm-oval green-bg" type="submit">
+                      Accept
+                    </button>
+                    <button
+                      type="button"
+                      className="sm-oval fail-100-bg"
+                      onClick={handleCloseModal}
+                    >
+                      Close
+                    </button>
+                  </div>
                 </form>
-                <div className="white-color pb-2">
-                  <p>Recorded on: {currDate.toLocaleDateString()}</p>
-                  <p>Today you have spent: ${currSpent}</p>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button className="sm-oval green-bg">Accept</button>
-                <button
-                  type="button"
-                  className="sm-oval fail-100-bg"
-                  onClick={handleCloseModal}
-                >
-                  Close
-                </button>
               </div>
             </dialog>
 
