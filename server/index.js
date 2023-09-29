@@ -11,6 +11,12 @@ app.use(express.json());
 
 mongoose.connect(`${process.env.MONGOOSE_CONNECTION}`, {});
 
+//date elements
+const date = new Date();
+const currYear = date.getFullYear();
+const currMonth = date.getMonth();
+const currDay = date.getDate();
+
 app.post("/login", async ({ body }, res) => {
   const foundUser = await UserModel.findOne({
     username: body.username,
@@ -36,8 +42,6 @@ app.post("/login", async ({ body }, res) => {
 });
 
 app.post("/signup", async ({ body }, res) => {
-  const currYear = new Date().getFullYear();
-
   if (body.username && body.password && body.monthlyLimit && body.dailyLimit) {
     const newUser = await UserModel.create({
       username: body.username,
@@ -49,6 +53,28 @@ app.post("/signup", async ({ body }, res) => {
     res.json({ success: true, user: newUser });
   } else {
     res.json({ error: "Did not receive username and password" });
+  }
+});
+
+app.post("/addExpense", async ({ body }, res) => {
+  const foundUser = await UserModel.findOne({
+    username: body.username,
+    password: body.password,
+  });
+  if (foundUser) {
+    await UserModel.findOneAndUpdate(
+      { username: body.username, password: body.password },
+      {
+        $set: {
+          [`data.${currYear}.${currMonth + 1}.${currDay}`]: body.expense,
+        },
+      },
+      { new: true }
+    );
+    await foundUser.save();
+    res.json({ success: true, user: foundUser });
+  } else {
+    res.json({ error: "user not found" });
   }
 });
 

@@ -56,7 +56,7 @@ const Calendar = ({
             className={
               "day-container " +
               (currDay >= day &&
-                (currMonthData[day] < dailyLimit
+                (currMonthData[day] <= dailyLimit
                   ? "success-bg"
                   : currMonthData[day] >= dailyLimit
                   ? "fail-bg"
