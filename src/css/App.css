@@ -97,6 +97,13 @@ main {
   text-align: center;
 }
 
+.modal-btn-div {
+  height: 120px;
+  width: 70%;
+  margin-inline: auto;
+  margin-top: 1rem;
+}
+
 /* Header */
 header {
   width: 100%;
@@ -409,7 +416,8 @@ footer * {
   font-weight: 200;
 }
 .uni-btn:hover,
-.sm-oval:hover {
+.sm-oval:hover,
+.lg-oval:hover {
   transform: translateY(-3px);
   box-shadow: 0 2px rgba(0, 0, 0, 0.7);
 }
@@ -460,6 +468,16 @@ footer * {
   font-family: var(--signika);
   font-weight: 600;
   color: whitesmoke;
+}
+.lg-oval {
+  padding: 12px 15px;
+  border: none;
+  border-radius: 50vw;
+  font-family: var(--signika);
+  font-weight: 300;
+  font-size: 1.2rem;
+  color: whitesmoke;
+  white-space: nowrap;
 }
 
 .dollar-sign {

@@ -31,7 +31,8 @@ const Dashboard = () => {
 
   const handleClickModal = (e) => {
     const modal = e.target.nextElementSibling;
-    modal.querySelector("form").reset();
+    const form = modal.querySelector("form");
+    if (form) form.reset();
     modal.showModal();
   };
 
@@ -41,17 +42,17 @@ const Dashboard = () => {
     } else {
       //only add expense to db if currspent is different than when first calling db
       if (currSpent !== location.data[currYear][currMonth][currDay]) {
-        //UPDATED USER NOT GETTING UPDATED MONTH OBJECT FROM BACKED
-        //FIX ME
-        //
-        console.log("currspent: ", currSpent);
         async function updateUser() {
           const updatedUser = await addExpense(
             location.username,
             location.password,
             currSpent
           );
-          console.log(updatedUser);
+          if (updatedUser.success) {
+            setCurrMonthData(updatedUser.user.data[currYear][currMonth]);
+          } else {
+            alert("your work was not saved.");
+          }
         }
         updateUser();
       }
@@ -68,14 +69,6 @@ const Dashboard = () => {
     if (expenseVal > 0) {
       //updates numbers on screen
       setCurrSpent((prevVal) => prevVal + expenseVal);
-      //updates calendar background
-      setCurrMonthData((prevData) => {
-        return {
-          ...prevData,
-          [currDay]: prevData[currDay] + expenseVal,
-        };
-      });
-      //close form
       e.target.closest("dialog").close();
     }
   };
@@ -152,6 +145,13 @@ const Dashboard = () => {
             Redraw Expense
           </button>
           {/* dialog attached to above button */}
+          <dialog className="modal primary-bg">
+            <h4>What needs to change? </h4>
+            <div className="flex-col modal-btn-div">
+              <button className="lg-oval secondary-bg">Today's Expenses</button>
+              <button className="lg-oval secondary-bg">My Allowances</button>
+            </div>
+          </dialog>
         </div>
 
         <Stats

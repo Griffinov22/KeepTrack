@@ -62,7 +62,7 @@ app.post("/addExpense", async ({ body }, res) => {
     password: body.password,
   });
   if (foundUser) {
-    await UserModel.findOneAndUpdate(
+    const updatedUser = await UserModel.findOneAndUpdate(
       { username: body.username, password: body.password },
       {
         $set: {
@@ -72,7 +72,7 @@ app.post("/addExpense", async ({ body }, res) => {
       { new: true }
     );
     await foundUser.save();
-    res.json({ success: true, user: foundUser });
+    res.json({ success: true, user: updatedUser });
   } else {
     res.json({ error: "user not found" });
   }
