@@ -5,9 +5,9 @@
 //money they can spend per day without going over their daily limit
 
 const currDate = new Date();
-const currDay = new Date().getDate();
-const currYear = new Date().getFullYear();
-const currMonth = new Date().getMonth();
+const currDay = currDate.getDate();
+const currYear = currDate.getFullYear();
+const currMonth = currDate.getMonth();
 
 export const dailyAverageLeft = (monthlyData, monthlyLimit) => {
   const monthlySum = Object.values(monthlyData).reduce(

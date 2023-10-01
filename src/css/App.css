@@ -47,10 +47,12 @@ main {
   inset: 0;
   margin: auto;
   border: none;
-  padding: 1.75rem;
   border-radius: 10px;
   width: 100%;
   max-width: 300px;
+}
+.modal-padding {
+  padding: 1.75rem;
 }
 .modal[open] {
   animation: modalFadeAndSlideIn 150ms ease both;

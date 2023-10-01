@@ -11,3 +11,4 @@ This project is intended to help people keep track of their monthly spending by 
 
 - [Figma Mock](https://www.figma.com/file/fU5aCDbdgsqQP3U1bOcLiO/KeepTrack?type=design&node-id=0-1&mode=design&t=JagillFjn02A1F3d-0)
 - [React Documentation](https://react.dev/learn)
+- [Good post on persistent state with localstorage](https://blog.bitsrc.io/5-methods-to-persisting-state-between-page-reloads-in-react-8fc9abd3fa2f)

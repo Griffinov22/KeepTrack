@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addExpense } from "../helpers/ServerHelpers";
+import ExpenseDialog from "../components/dialogs/ExpenseDialog";
 import "../css/App.css";
 import Calendar from "../components/Calendar";
 import Stats from "../components/Stats";
+import RedrawDialogs from "../components/dialogs/RedrawDialogs";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -15,8 +17,11 @@ const Dashboard = () => {
   const currYear = currDate.getFullYear();
 
   const [currSpent, setCurrSpent] = useState(
-    location.data[currYear][currMonth][currDay] || 0
+    Number(JSON.parse(window.localStorage.getItem("currDaySpent"))) ||
+      location.data[currYear][currMonth][currDay] ||
+      0
   );
+
   const [currMonthData, setCurrMonthData] = useState(
     location.data[currYear][currMonth] || {}
   );
@@ -50,6 +55,10 @@ const Dashboard = () => {
           );
           if (updatedUser.success) {
             setCurrMonthData(updatedUser.user.data[currYear][currMonth]);
+            window.localStorage.setItem(
+              "currDaySpent",
+              JSON.stringify(currSpent)
+            );
           } else {
             alert("your work was not saved.");
           }
@@ -108,50 +117,23 @@ const Dashboard = () => {
             Add Expense
           </button>
           {/* dialog attached to above button */}
-          <dialog className="modal secondary-bg">
-            <div className="modal-header">
-              <h4>Add Your Expense:</h4>
-            </div>
-            <div className="modal-body">
-              <form className="modal-form" onSubmit={handleSubmitExpense}>
-                <div className="flex-evenly pb-2">
-                  <span className="dollar-sign white-color">$</span>
-                  <input type="number" min="0" name="addExpense" />
-                  <p></p>
-                </div>
-
-                <div className="white-color pb-2">
-                  <p>Recorded on: {currDate.toLocaleDateString()}</p>
-                  <p>Today you have spent: ${currSpent}</p>
-                </div>
-
-                <div className="flex-row-ends">
-                  <button className="sm-oval green-bg" type="submit">
-                    Accept
-                  </button>
-                  <button
-                    type="button"
-                    className="sm-oval fail-100-bg"
-                    onClick={handleCloseModal}
-                  >
-                    Close
-                  </button>
-                </div>
-              </form>
-            </div>
-          </dialog>
-
+          <ExpenseDialog
+            handleSubmitExpense={handleSubmitExpense}
+            currDate={currDate}
+            currSpent={currSpent}
+            handleCloseModal={handleCloseModal}
+            givenId="add-expense-dialog"
+          />
           <button className="sm-oval primary-bg" onClick={handleClickModal}>
             Redraw Expense
           </button>
           {/* dialog attached to above button */}
-          <dialog className="modal primary-bg">
-            <h4>What needs to change? </h4>
-            <div className="flex-col modal-btn-div">
-              <button className="lg-oval secondary-bg">Today's Expenses</button>
-              <button className="lg-oval secondary-bg">My Allowances</button>
-            </div>
-          </dialog>
+          <RedrawDialogs
+            handleSubmitExpense={handleSubmitExpense}
+            handleCloseModal={handleCloseModal}
+            currDate={currDate}
+            currSpent={currSpent}
+          />
         </div>
 
         <Stats
