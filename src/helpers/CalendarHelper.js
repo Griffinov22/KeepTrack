@@ -33,6 +33,16 @@ function getPreviousMonthDays(firstDayOfMonthInt, yearInt, currMonthInt) {
   return prevDays;
 }
 
+function getNextMonthDays(prevMonthDaysLength, currMonthLength) {
+  //the calendar has 35 spaces
+  const nextMonthNum = 35 - (prevMonthDaysLength + currMonthLength);
+  const nextMonthArr = [];
+  for (let i = 1; i <= nextMonthNum; i++) {
+    nextMonthArr.push(i);
+  }
+  return nextMonthArr;
+}
+
 function getCurrMonth() {
   const months = [
     "January",
@@ -51,4 +61,10 @@ function getCurrMonth() {
   return months[new Date().getMonth()];
 }
 
-export { getFirstDayOfMonth, getMonthDays, getCurrMonth, getPreviousMonthDays };
+export {
+  getFirstDayOfMonth,
+  getMonthDays,
+  getCurrMonth,
+  getPreviousMonthDays,
+  getNextMonthDays,
+};

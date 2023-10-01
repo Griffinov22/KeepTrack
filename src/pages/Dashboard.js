@@ -133,6 +133,8 @@ const Dashboard = () => {
             handleCloseModal={handleCloseModal}
             currDate={currDate}
             currSpent={currSpent}
+            dailyLimit={dailyLimit}
+            monthlyLimit={monthlyLimit}
           />
         </div>
 

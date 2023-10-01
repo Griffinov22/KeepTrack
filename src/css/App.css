@@ -11,6 +11,7 @@
   --gold-100: #f7b100;
   --fail: #ff593420;
   --fail-100: #ff5934;
+  --lightgrey: #e9e9e9;
   --grey: #9a9a9a9b;
   --grey-100: #787878;
   --off-white: #f4f6ff;
@@ -94,9 +95,20 @@ main {
 .modal-form input {
   font-family: var(--signika);
   font-size: 2rem;
-  width: 40%;
+  width: max(40%, 90px);
   padding: 0.25rem;
+  padding-right: 0rem;
   text-align: center;
+}
+.modal-form input:focus-visible {
+  outline: none;
+}
+
+.modal-allowance-div {
+  width: min-content;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .modal-btn-div {
@@ -527,6 +539,9 @@ footer * {
 }
 .grey-bg {
   background: linear-gradient(var(--grey), white);
+}
+.light-grey-bg {
+  background: linear-gradient(var(--lightgrey), white);
 }
 .grey-color {
   color: var(--grey);

@@ -5,6 +5,7 @@ import {
   getFirstDayOfMonth,
   getMonthDays,
   getPreviousMonthDays,
+  getNextMonthDays,
 } from "../helpers/CalendarHelper";
 
 const Calendar = ({
@@ -24,6 +25,8 @@ const Calendar = ({
     currDate.getFullYear(),
     currDate.getMonth()
   ).reverse();
+
+  const nextMonthDays = getNextMonthDays(prevDays.length, daysInMonth.length);
 
   return (
     <div className="calendar-wrapper">
@@ -61,7 +64,7 @@ const Calendar = ({
                   : currMonthData[day] >= dailyLimit
                   ? "fail-bg"
                   : "")) +
-              (currDay < day ? " grey-bg" : "")
+              (currDay < day ? " light-grey-bg" : "")
             }
             key={day}
           >
@@ -71,6 +74,15 @@ const Calendar = ({
             <p className={"day-money " + (currDay === day ? "curr-color" : "")}>
               {day === currDay ? currSpent : currMonthData[day]}
             </p>
+          </div>
+        ))}
+        {/* next month days */}
+        {nextMonthDays.map((day) => (
+          <div className={"day-container grey-bg"} key={day}>
+            {/* day in next month */}
+            <time className="day">{day}</time>
+            {/* money */}
+            <p className={"day-money "}>0</p>
           </div>
         ))}
       </div>

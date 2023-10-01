@@ -8,6 +8,8 @@ const RedrawDialogs = ({
   currSpent,
   handleCloseModal,
   setCurrSpent,
+  dailyLimit,
+  monthlyLimit,
 }) => {
   const handleRedrawModalClick = (e) => {
     const expenseModal = document.getElementById("redraw-modal");
@@ -21,7 +23,7 @@ const RedrawDialogs = ({
       if (e.target.id === "allowance") {
         expenseModal.close();
         //trigger redraw allowance
-        console.log("allowance");
+        document.getElementById("allowance-dialog").showModal();
       }
     } else {
       //clicked outside modal
@@ -72,6 +74,60 @@ const RedrawDialogs = ({
             <div className="white-color pb-2">
               <p>Recorded on: {currDate.toLocaleDateString()}</p>
               <p>Today you have spent: ${currSpent}</p>
+            </div>
+
+            <div className="flex-row-ends">
+              <button className="sm-oval green-bg" type="submit">
+                Accept
+              </button>
+              <button
+                type="button"
+                className="sm-oval fail-100-bg"
+                onClick={handleCloseModal}
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </dialog>
+      {/* correct expense dialog */}
+      <dialog
+        id="allowance-dialog"
+        className="modal modal-padding secondary-bg"
+      >
+        <div className="modal-header">
+          <h4>Correct Allowance:</h4>
+        </div>
+        <div className="modal-body">
+          <form className="modal-form" onSubmit={handleSubmitExpense}>
+            <div className="pb-2 flex-row-ends">
+              <h4>Daily:</h4>
+              <div className="modal-allowance-div">
+                <span className="dollar-sign white-color">$</span>
+                <input
+                  type="number"
+                  min="0"
+                  name="dailyAllowance"
+                  value={dailyLimit}
+                />
+              </div>
+            </div>
+            <div className="pb-2 flex-row-ends">
+              <h4>Monthly:</h4>
+              <div className="modal-allowance-div">
+                <span className="dollar-sign white-color">$</span>
+                <input
+                  type="number"
+                  min="0"
+                  name="monthlyAllowance"
+                  value={monthlyLimit}
+                />
+              </div>
+            </div>
+
+            <div className="white-color pb-2">
+              <p>Recorded on: {currDate.toLocaleDateString()}</p>
             </div>
 
             <div className="flex-row-ends">

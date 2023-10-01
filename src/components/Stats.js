@@ -70,7 +70,7 @@ const Stats = ({ monthlyLimit, dailyLimit, currMonthData, currSpent }) => {
           <p className="stats-stat">{monthlyLimit}</p>
         </div>
         <div className="flex-col">
-          <h5 className="stats-header">Daily Mean Allowance:</h5>
+          <h5 className="stats-header">Daily Average Allowance:</h5>
           <p
             className={
               "stats-stat self-right " + (dailyAverage < 0 ? "fail-color" : "")
