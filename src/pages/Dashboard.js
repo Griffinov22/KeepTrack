@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addExpense } from "../helpers/ServerHelpers";
+import { addExpense, setUserLimits } from "../helpers/ServerHelpers";
 import ExpenseDialog from "../components/dialogs/ExpenseDialog";
 import "../css/App.css";
 import Calendar from "../components/Calendar";
@@ -17,7 +17,7 @@ const Dashboard = () => {
   const currYear = currDate.getFullYear();
 
   const [currSpent, setCurrSpent] = useState(
-    Number(JSON.parse(window.localStorage.getItem("currDaySpent"))) ||
+    Number.parseInt(JSON.parse(window.localStorage.getItem("currDaySpent"))) ||
       location.data[currYear][currMonth][currDay] ||
       0
   );
@@ -31,8 +31,16 @@ const Dashboard = () => {
   const [nextMonthData, setNextMonthData] = useState(
     location.data[currYear][currMonth + 1] || {}
   );
-  const [monthlyLimit, setMonthlyLimit] = useState(location.monthlyLimit || 0);
-  const [dailyLimit, setDailyLimit] = useState(location.dailyLimit || 0);
+  const [monthlyLimit, setMonthlyLimit] = useState(
+    Number.parseInt(JSON.parse(window.localStorage.getItem("monthlyLimit"))) ||
+      location.monthlyLimit ||
+      0
+  );
+  const [dailyLimit, setDailyLimit] = useState(
+    Number.parseInt(JSON.parse(window.localStorage.getItem("dailyLimit"))) ||
+      location.dailyLimit ||
+      0
+  );
 
   const handleClickModal = (e) => {
     const modal = e.target.nextElementSibling;
@@ -47,7 +55,7 @@ const Dashboard = () => {
     } else {
       //only add expense to db if currspent is different than when first calling db
       if (currSpent !== location.data[currYear][currMonth][currDay]) {
-        async function updateUser() {
+        async function updateUserSpent() {
           const updatedUser = await addExpense(
             location.username,
             location.password,
@@ -63,10 +71,36 @@ const Dashboard = () => {
             alert("your work was not saved.");
           }
         }
-        updateUser();
+        updateUserSpent();
       }
     }
   }, [currSpent]);
+
+  //daily and monthly limit change
+  useEffect(() => {
+    if (!location) {
+      navigate("/unauthorized", { state: { error: "you have not logged in" } });
+    } else {
+      async function updateUserLimits() {
+        const updatedUser = await setUserLimits(
+          location.username,
+          location.password,
+          dailyLimit,
+          monthlyLimit
+        );
+        if (updatedUser.success) {
+          window.localStorage.setItem("dailyLimit", JSON.stringify(dailyLimit));
+          window.localStorage.setItem(
+            "monthlyLimit",
+            JSON.stringify(monthlyLimit)
+          );
+        } else {
+          alert("your work was not saved.");
+        }
+      }
+      updateUserLimits();
+    }
+  }, [dailyLimit, monthlyLimit]);
 
   const handleCloseModal = (e) => {
     e.target.closest("dialog").close();
@@ -134,7 +168,9 @@ const Dashboard = () => {
             currDate={currDate}
             currSpent={currSpent}
             dailyLimit={dailyLimit}
+            setDailyLimit={setDailyLimit}
             monthlyLimit={monthlyLimit}
+            setMonthlyLimit={setMonthlyLimit}
           />
         </div>
 

@@ -45,3 +45,23 @@ export const addExpense = async (username, password, expense) => {
   const updateUserData = await updateUser.json();
   return updateUserData;
 };
+
+export const setUserLimits = async (
+  username,
+  password,
+  dailyLimit,
+  monthlyLimit
+) => {
+  const updatedUser = await fetch(
+    `${process.env.REACT_APP_BASE_API_KEY}/setLimits`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password, dailyLimit, monthlyLimit }),
+    }
+  );
+  const updatedUserLimits = await updatedUser.json();
+  return updatedUserLimits;
+};

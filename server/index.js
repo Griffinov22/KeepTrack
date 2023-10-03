@@ -78,6 +78,29 @@ app.post("/addExpense", async ({ body }, res) => {
   }
 });
 
+app.post("/setLimits", async ({ body }, res) => {
+  const foundUser = await UserModel.findOne({
+    username: body.username,
+    password: body.password,
+  });
+  if (foundUser) {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { username: body.username, password: body.password },
+      {
+        $set: {
+          dailyLimit: body.dailyLimit,
+          monthlyLimit: body.monthlyLimit,
+        },
+      },
+      { new: true }
+    );
+    await foundUser.save();
+    res.json({ success: true, user: updatedUser });
+  } else {
+    res.json({ error: "user not found" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("listening on port http://localhost:3001");
 });

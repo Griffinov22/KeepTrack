@@ -9,6 +9,8 @@ const RedrawDialogs = ({
   setCurrSpent,
   dailyLimit,
   monthlyLimit,
+  setMonthlyLimit,
+  setDailyLimit,
 }) => {
   const handleRedrawModalClick = (e) => {
     const expenseModal = document.getElementById("redraw-modal");
@@ -34,6 +36,24 @@ const RedrawDialogs = ({
     e.preventDefault();
     const expenseVal = Number.parseInt(e.target.addExpense.value);
     if (expenseVal > 0) {
+      e.target.closest("dialog").close();
+    }
+  };
+
+  const handleSubmitAllowance = (e) => {
+    e.preventDefault();
+    const dailyAllowance = Number.parseInt(e.target.dailyAllowance.value);
+    const monthlyAllowance = Number.parseInt(e.target.monthlyAllowance.value);
+    //validation
+    if (
+      monthlyAllowance >= dailyAllowance &&
+      monthlyAllowance >= 0 &&
+      dailyAllowance >= 0
+    ) {
+      //close dialog
+      setMonthlyLimit(monthlyAllowance);
+      setDailyLimit(dailyAllowance);
+      e.target.reset();
       e.target.closest("dialog").close();
     }
   };
@@ -112,7 +132,7 @@ const RedrawDialogs = ({
           <h4>Correct Allowance:</h4>
         </div>
         <div className="modal-body">
-          <form className="modal-form" onSubmit={handleSubmitExpense}>
+          <form className="modal-form" onSubmit={handleSubmitAllowance}>
             <div className="pb-2 flex-row-ends">
               <h4>Daily:</h4>
               <div className="modal-allowance-div">
@@ -121,8 +141,7 @@ const RedrawDialogs = ({
                   type="number"
                   min="0"
                   name="dailyAllowance"
-                  value={dailyLimit}
-                  onChange={(e) => setCurrSpent(e.target.value)}
+                  placeholder={dailyLimit}
                 />
               </div>
             </div>
@@ -134,7 +153,7 @@ const RedrawDialogs = ({
                   type="number"
                   min="0"
                   name="monthlyAllowance"
-                  value={monthlyLimit}
+                  placeholder={monthlyLimit}
                 />
               </div>
             </div>
