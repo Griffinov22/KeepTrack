@@ -3,7 +3,6 @@ import "../../css/App.css";
 import ExpenseDialog from "./ExpenseDialog";
 
 const RedrawDialogs = ({
-  handleSubmitExpense,
   currDate,
   currSpent,
   handleCloseModal,
@@ -31,6 +30,18 @@ const RedrawDialogs = ({
     }
   };
 
+  const handleSubmitExpense = (e) => {
+    e.preventDefault();
+    const expenseVal = Number.parseInt(e.target.addExpense.value);
+    if (expenseVal > 0) {
+      e.target.closest("dialog").close();
+    }
+  };
+
+  const handleExpenseChange = (e) => {
+    e.target.value >= 0 && setCurrSpent(Number(e.target.value));
+  };
+
   return (
     <>
       <dialog
@@ -50,13 +61,13 @@ const RedrawDialogs = ({
           </div>
         </div>
       </dialog>
-      {/* correct expense dialog */}
+      {/* correct todays expense dialog */}
       <dialog
         id="correct-expense-dialog"
         className="modal modal-padding secondary-bg"
       >
         <div className="modal-header">
-          <h4>Add Your Expense:</h4>
+          <h4>Correct Today's Expense:</h4>
         </div>
         <div className="modal-body">
           <form className="modal-form" onSubmit={handleSubmitExpense}>
@@ -67,6 +78,7 @@ const RedrawDialogs = ({
                 min="0"
                 name="addExpense"
                 value={currSpent}
+                onChange={handleExpenseChange}
               />
               <p></p>
             </div>
@@ -91,7 +103,7 @@ const RedrawDialogs = ({
           </form>
         </div>
       </dialog>
-      {/* correct expense dialog */}
+      {/* correct alowance dialog */}
       <dialog
         id="allowance-dialog"
         className="modal modal-padding secondary-bg"
@@ -110,6 +122,7 @@ const RedrawDialogs = ({
                   min="0"
                   name="dailyAllowance"
                   value={dailyLimit}
+                  onChange={(e) => setCurrSpent(e.target.value)}
                 />
               </div>
             </div>

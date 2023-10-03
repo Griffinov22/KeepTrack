@@ -129,8 +129,8 @@ const Dashboard = () => {
           </button>
           {/* dialog attached to above button */}
           <RedrawDialogs
-            handleSubmitExpense={handleSubmitExpense}
             handleCloseModal={handleCloseModal}
+            setCurrSpent={setCurrSpent}
             currDate={currDate}
             currSpent={currSpent}
             dailyLimit={dailyLimit}
