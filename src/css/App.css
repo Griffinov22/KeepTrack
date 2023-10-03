@@ -363,6 +363,25 @@ footer * {
   font-size: 0.8rem;
 }
 
+/* unauthorized page */
+.error-container {
+  text-align: center;
+  font-family: var(--prompt);
+}
+
+.error-header {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+.error-desc {
+  font-size: 1.2rem;
+}
+.error-img {
+  width: 70%;
+  max-width: 200px;
+  transform: translateX(5%);
+}
+
 /* unique */
 .descflex {
   margin-block: 2.75rem;

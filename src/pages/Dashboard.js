@@ -10,7 +10,7 @@ import RedrawDialogs from "../components/dialogs/RedrawDialogs";
 const Dashboard = ({ setLoggedIn }) => {
   const navigate = useNavigate();
   const location = useLocation().state;
-  setLoggedIn(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const currDate = new Date();
   const currDay = currDate.getDate();
@@ -19,28 +19,18 @@ const Dashboard = ({ setLoggedIn }) => {
 
   const [currSpent, setCurrSpent] = useState(
     Number.parseInt(JSON.parse(window.localStorage.getItem("currDaySpent"))) ||
-      location.data[currYear][currMonth][currDay] ||
       0
   );
 
-  const [currMonthData, setCurrMonthData] = useState(
-    location.data[currYear][currMonth] || {}
-  );
-  const [prevMonthData, setPrevMonthData] = useState(
-    location.data[currYear][currMonth - 1] || {}
-  );
-  const [nextMonthData, setNextMonthData] = useState(
-    location.data[currYear][currMonth + 1] || {}
-  );
+  const [currMonthData, setCurrMonthData] = useState({});
+  const [prevMonthData, setPrevMonthData] = useState({});
+  const [nextMonthData, setNextMonthData] = useState({});
   const [monthlyLimit, setMonthlyLimit] = useState(
     Number.parseInt(JSON.parse(window.localStorage.getItem("monthlyLimit"))) ||
-      location.monthlyLimit ||
       0
   );
   const [dailyLimit, setDailyLimit] = useState(
-    Number.parseInt(JSON.parse(window.localStorage.getItem("dailyLimit"))) ||
-      location.dailyLimit ||
-      0
+    Number.parseInt(JSON.parse(window.localStorage.getItem("dailyLimit"))) || 0
   );
 
   const handleClickModal = (e) => {
@@ -49,6 +39,22 @@ const Dashboard = ({ setLoggedIn }) => {
     if (form) form.reset();
     modal.showModal();
   };
+
+  useEffect(() => {
+    if (!location) {
+      navigate("/unauthorized", { state: { error: "you have not logged in" } });
+    } else {
+      //removes login button from rendering in header
+      setIsLoading(false);
+      setLoggedIn(true);
+      setCurrSpent(location.data[currYear][currMonth][currDay]);
+      setCurrMonthData(location.data[currYear][currMonth]);
+      setPrevMonthData(location.data[currYear][currMonth - 1]);
+      setNextMonthData(location.data[currYear][currMonth + 1]);
+      setMonthlyLimit(location.monthlyLimit);
+      setDailyLimit(location.dailyLimit);
+    }
+  }, []);
 
   useEffect(() => {
     if (!location) {
@@ -117,73 +123,74 @@ const Dashboard = ({ setLoggedIn }) => {
     }
   };
 
-  return (
-    <div className="dashboard-wrapper">
-      <div className="flex-row-ends dash-header no-wrap cal-width">
-        <p className="grey">Today I've spent:</p>
-        {/* date */}
-        <p className="bold-6">{currDate.toLocaleDateString()}</p>
-      </div>
-      <div className="money-wrapper cal-width">
-        {/* todays spending */}
-        <h2
-          id="curr-money"
-          className={
-            currSpent > dailyLimit
-              ? "fail-color"
-              : currSpent === dailyLimit
-              ? "okay-color"
-              : "green-color"
-          }
-        >
-          {currSpent}
-        </h2>
-      </div>
-      <Calendar
-        currSpent={currSpent}
-        currMonthData={currMonthData}
-        prevMonthData={prevMonthData}
-        nextMonthData={nextMonthData}
-        dailyLimit={dailyLimit}
-      />
-      <div className="cal-width">
-        <div className="flex-row-ends py-1">
-          <button className="sm-oval green-bg" onClick={handleClickModal}>
-            Add Expense
-          </button>
-          {/* dialog attached to above button */}
-          <ExpenseDialog
-            handleSubmitExpense={handleSubmitExpense}
-            currDate={currDate}
-            currSpent={currSpent}
-            handleCloseModal={handleCloseModal}
-            givenId="add-expense-dialog"
-          />
-          <button className="sm-oval primary-bg" onClick={handleClickModal}>
-            Redraw Expense
-          </button>
-          {/* dialog attached to above button */}
-          <RedrawDialogs
-            handleCloseModal={handleCloseModal}
-            setCurrSpent={setCurrSpent}
-            currDate={currDate}
-            currSpent={currSpent}
-            dailyLimit={dailyLimit}
-            setDailyLimit={setDailyLimit}
+  if (!isLoading)
+    return (
+      <div className="dashboard-wrapper">
+        <div className="flex-row-ends dash-header no-wrap cal-width">
+          <p className="grey">Today I've spent:</p>
+          {/* date */}
+          <p className="bold-6">{currDate.toLocaleDateString()}</p>
+        </div>
+        <div className="money-wrapper cal-width">
+          {/* todays spending */}
+          <h2
+            id="curr-money"
+            className={
+              currSpent > dailyLimit
+                ? "fail-color"
+                : currSpent === dailyLimit
+                ? "okay-color"
+                : "green-color"
+            }
+          >
+            {currSpent}
+          </h2>
+        </div>
+        <Calendar
+          currSpent={currSpent}
+          currMonthData={currMonthData}
+          prevMonthData={prevMonthData}
+          nextMonthData={nextMonthData}
+          dailyLimit={dailyLimit}
+        />
+        <div className="cal-width">
+          <div className="flex-row-ends py-1">
+            <button className="sm-oval green-bg" onClick={handleClickModal}>
+              Add Expense
+            </button>
+            {/* dialog attached to above button */}
+            <ExpenseDialog
+              handleSubmitExpense={handleSubmitExpense}
+              currDate={currDate}
+              currSpent={currSpent}
+              handleCloseModal={handleCloseModal}
+              givenId="add-expense-dialog"
+            />
+            <button className="sm-oval primary-bg" onClick={handleClickModal}>
+              Redraw Expense
+            </button>
+            {/* dialog attached to above button */}
+            <RedrawDialogs
+              handleCloseModal={handleCloseModal}
+              setCurrSpent={setCurrSpent}
+              currDate={currDate}
+              currSpent={currSpent}
+              dailyLimit={dailyLimit}
+              setDailyLimit={setDailyLimit}
+              monthlyLimit={monthlyLimit}
+              setMonthlyLimit={setMonthlyLimit}
+            />
+          </div>
+
+          <Stats
             monthlyLimit={monthlyLimit}
-            setMonthlyLimit={setMonthlyLimit}
+            dailyLimit={dailyLimit}
+            currMonthData={currMonthData}
+            currSpent={currSpent}
           />
         </div>
-
-        <Stats
-          monthlyLimit={monthlyLimit}
-          dailyLimit={dailyLimit}
-          currMonthData={currMonthData}
-          currSpent={currSpent}
-        />
       </div>
-    </div>
-  );
+    );
 };
 
 export default Dashboard;
