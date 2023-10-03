@@ -7,9 +7,10 @@ import Calendar from "../components/Calendar";
 import Stats from "../components/Stats";
 import RedrawDialogs from "../components/dialogs/RedrawDialogs";
 
-const Dashboard = () => {
+const Dashboard = ({ setLoggedIn }) => {
   const navigate = useNavigate();
   const location = useLocation().state;
+  setLoggedIn(true);
 
   const currDate = new Date();
   const currDay = currDate.getDate();

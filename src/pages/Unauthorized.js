@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import "../css/App.css";
 import { useLocation } from "react-router-dom";
 
-const Unauthorized = () => {
+const Unauthorized = ({ setLoggedIn }) => {
   const location = useLocation();
   const [errorMsg, setErrorMsg] = useState(
     "Sorry the page you were trying to find can't be found"
   );
+  setLoggedIn(false);
 
   useEffect(() => {
     if (location.state !== null) {

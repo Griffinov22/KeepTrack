@@ -11,19 +11,24 @@ import Dashboard from "./pages/Dashboard";
 import Unauthorized from "./pages/Unauthorized";
 
 function App() {
-  //has 3 states -1,0,1 for false, pending, and true states
-  const [loggedIn, setLoggedIn] = useState(-1); //false
+  const [loggedIn, setLoggedIn] = useState(false); //false
 
   return (
     <BrowserRouter>
-      <Header />
+      <Header loggedIn={loggedIn} />
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path={"/unauthorized"} element={<Unauthorized />} />
+          <Route
+            path="/dashboard"
+            element={<Dashboard setLoggedIn={setLoggedIn} />}
+          />
+          <Route
+            path={"/unauthorized"}
+            element={<Unauthorized setLoggedIn={setLoggedIn} />}
+          />
           <Route path={"*"} element={<Unauthorized />} />
         </Routes>
       </main>

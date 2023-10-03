@@ -1,14 +1,18 @@
 import React from "react";
 import "../css/App.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ loggedIn }) => {
+  const navigate = useNavigate();
+
   return (
     <header>
-      <h1>KeepTrack</h1>
-      <Link className="login-a" to="/login">
-        Login
-      </Link>
+      <h1 onClick={() => navigate("/")}>KeepTrack</h1>
+      {!loggedIn && (
+        <Link className="login-a" to="/login">
+          Login
+        </Link>
+      )}
     </header>
   );
 };
