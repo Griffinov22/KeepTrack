@@ -101,6 +101,4 @@ app.post("/setLimits", async ({ body }, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log("listening on port http://localhost:3001");
-});
+app.listen(process.env.PORT || 3001);
