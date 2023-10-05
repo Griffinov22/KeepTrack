@@ -31,7 +31,7 @@
   font-family: var(--prompt);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 main {
@@ -105,10 +105,10 @@ main {
 }
 
 .modal-allowance-div {
-  width: min-content;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: flex-end;
+  column-gap: 1rem;
 }
 
 .modal-btn-div {
@@ -389,12 +389,13 @@ footer * {
   justify-content: space-between;
   align-items: center;
   column-gap: 10%;
-  max-width: 600px;
+  max-width: 100%;
   margin-inline: auto;
+  height: min-content;
 }
 .descflex-text {
-  max-width: 300px;
-  white-space: wrap;
+  /* did they change white-space:wrap to white-space:normal ?? */
+  white-space: normal;
 }
 
 .sm-img {

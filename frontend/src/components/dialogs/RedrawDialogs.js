@@ -35,7 +35,7 @@ const RedrawDialogs = ({
   const handleSubmitExpense = (e) => {
     e.preventDefault();
     const expenseVal = Number.parseInt(e.target.addExpense.value);
-    if (expenseVal > 0) {
+    if (expenseVal >= 0) {
       e.target.closest("dialog").close();
     }
   };
