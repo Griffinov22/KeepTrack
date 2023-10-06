@@ -522,6 +522,29 @@ footer * {
   font-weight: 600;
 }
 
+.loading-div {
+  width: 20px;
+  height: 20px;
+  margin-inline: auto;
+  background-color: var(--secondary);
+  animation-name: loading;
+  animation-duration: 2s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.74, 0.01, 0.13, 0.97);
+}
+
+@keyframes loading {
+  from {
+    background-color: var(--secondary);
+    transform: rotate(0deg);
+  }
+  to {
+    background-color: var(--gold-100);
+    transform: rotate(360deg);
+  }
+}
+
 /* colors */
 
 .success-bg {

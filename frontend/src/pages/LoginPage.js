@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/App.css";
 import MainHeader from "../components/MainHeader";
 import LoginInputs from "../components/inputs/LoginInputs";
@@ -9,9 +9,7 @@ const LoginPage = () => {
   return (
     <div>
       <MainHeader text="Sign in to Your KeepTrack" />
-      <LoginInputs>
-        <SubmitBtnOval />
-      </LoginInputs>
+      <LoginInputs />
       <DescriptionFlex
         ImgUrl="Images/shopping-cart.svg"
         ImgLeftOrRight="left"

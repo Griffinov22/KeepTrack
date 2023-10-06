@@ -1,10 +1,10 @@
 import React from "react";
 import "../../css/App.css";
 
-const SubmitBtnOval = () => {
+const SubmitBtnOval = ({ text = "submit", onClick }) => {
   return (
-    <button className="uni-btn" type="submit">
-      Submit
+    <button className="uni-btn" type="submit" onClick={onClick}>
+      {text}
     </button>
   );
 };

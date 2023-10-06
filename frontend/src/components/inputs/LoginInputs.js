@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import "../../css/App.css";
 import { checkLogin } from "../../helpers/ServerHelpers";
+import SubmitBtnOval from "../buttons/SubmitBtnOval";
 
 const LoginInputs = ({ children }) => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const LoginInputs = ({ children }) => {
     password: "",
   });
   const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = ({ target }) => {
     setShowError(false);
@@ -26,11 +28,18 @@ const LoginInputs = ({ children }) => {
     if (data.error) {
       //error -- show validation error
       setShowError(true);
+      setLoading(false);
     } else {
       //go to dashboard with data
       navigate("/dashboard", { state: data });
     }
   };
+
+  const handleClick = (e) => {
+    setLoading(true);
+  };
+
+  const loadingDiv = <div className="loading-div" aria-label="loading"></div>;
 
   return (
     <form
@@ -64,7 +73,10 @@ const LoginInputs = ({ children }) => {
           The profile with those credentials were not found
         </span>
       )}
-      {children}
+      <SubmitBtnOval
+        onClick={handleClick}
+        text={loading ? loadingDiv : "submit"}
+      />
     </form>
   );
 };
