@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addExpense, setUserLimits } from "../helpers/ServerHelpers";
+import { addExpense, setUserLimits, getUser } from "../helpers/ServerHelpers";
 import ExpenseDialog from "../components/dialogs/ExpenseDialog";
 import "../css/App.css";
 import Calendar from "../components/Calendar";
@@ -17,21 +17,65 @@ const Dashboard = ({ setLoggedIn }) => {
   const currMonth = currDate.getMonth() + 1;
   const currYear = currDate.getFullYear();
 
-  const [currSpent, setCurrSpent] = useState(
-    Number.parseInt(JSON.parse(window.localStorage.getItem("currDaySpent"))) ||
-      0
-  );
+  const [currSpent, setCurrSpent] = useState(0);
 
   const [currMonthData, setCurrMonthData] = useState({});
   const [prevMonthData, setPrevMonthData] = useState({});
   const [nextMonthData, setNextMonthData] = useState({});
-  const [monthlyLimit, setMonthlyLimit] = useState(
-    Number.parseInt(JSON.parse(window.localStorage.getItem("monthlyLimit"))) ||
-      0
-  );
-  const [dailyLimit, setDailyLimit] = useState(
-    Number.parseInt(JSON.parse(window.localStorage.getItem("dailyLimit"))) || 0
-  );
+  const [monthlyLimit, setMonthlyLimit] = useState(0);
+  const [dailyLimit, setDailyLimit] = useState(0);
+
+  useEffect(() => {
+    if (!location) {
+      navigate("/unauthorized", { state: { error: "you have not logged in" } });
+    } else {
+      //removes login button from rendering in header
+      async function setDashboard() {
+        console.log(location);
+        const foundUser = await getUser(location.username, location.password);
+        if (foundUser) {
+          console.log(foundUser);
+          setIsLoading(false);
+          setLoggedIn(true);
+          setCurrSpent(foundUser.data[currYear][currMonth][currDay]);
+          setCurrMonthData(foundUser.data[currYear][currMonth]);
+          setPrevMonthData(foundUser.data[currYear][currMonth - 1]);
+          setNextMonthData(foundUser.data[currYear][currMonth + 1]);
+          setMonthlyLimit(foundUser.monthlyLimit);
+          setDailyLimit(foundUser.dailyLimit);
+        } else {
+          alert("no user was found");
+        }
+      }
+      setDashboard();
+    }
+  }, []);
+
+  //daily and monthly limit change
+  // useEffect(() => {
+  //   if (!location) {
+  //     navigate("/unauthorized", { state: { error: "you have not logged in" } });
+  //   } else {
+  //     async function updateUserLimits() {
+  //       const updatedUser = await setUserLimits(
+  //         location.username,
+  //         location.password,
+  //         dailyLimit,
+  //         monthlyLimit
+  //       );
+  //       if (updatedUser.success) {
+  //         //pass
+  //       } else {
+  //         alert("your work was not saved.");
+  //       }
+  //     }
+  //     updateUserLimits();
+  //   }
+  // }, [dailyLimit, monthlyLimit]);
+
+  const handleCloseModal = (e) => {
+    e.target.closest("dialog").close();
+  };
 
   const handleClickModal = (e) => {
     const modal = e.target.nextElementSibling;
@@ -40,85 +84,24 @@ const Dashboard = ({ setLoggedIn }) => {
     modal.showModal();
   };
 
-  useEffect(() => {
-    if (!location) {
-      navigate("/unauthorized", { state: { error: "you have not logged in" } });
-    } else {
-      //removes login button from rendering in header
-      setIsLoading(false);
-      setLoggedIn(true);
-      setCurrSpent(location.data[currYear][currMonth][currDay]);
-      setCurrMonthData(location.data[currYear][currMonth]);
-      setPrevMonthData(location.data[currYear][currMonth - 1]);
-      setNextMonthData(location.data[currYear][currMonth + 1]);
-      setMonthlyLimit(location.monthlyLimit);
-      setDailyLimit(location.dailyLimit);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!location) {
-      navigate("/unauthorized", { state: { error: "you have not logged in" } });
-    } else {
-      //only add expense to db if currspent is different than when first calling db
-      if (currSpent !== location.data[currYear][currMonth][currDay]) {
-        async function updateUserSpent() {
-          const updatedUser = await addExpense(
-            location.username,
-            location.password,
-            currSpent
-          );
-          if (updatedUser.success) {
-            setCurrMonthData(updatedUser.user.data[currYear][currMonth]);
-            window.localStorage.setItem(
-              "currDaySpent",
-              JSON.stringify(currSpent)
-            );
-          } else {
-            alert("your work was not saved.");
-          }
-        }
-        updateUserSpent();
-      }
-    }
-  }, [currSpent]);
-
-  //daily and monthly limit change
-  useEffect(() => {
-    if (!location) {
-      navigate("/unauthorized", { state: { error: "you have not logged in" } });
-    } else {
-      async function updateUserLimits() {
-        const updatedUser = await setUserLimits(
-          location.username,
-          location.password,
-          dailyLimit,
-          monthlyLimit
-        );
-        if (updatedUser.success) {
-          window.localStorage.setItem("dailyLimit", JSON.stringify(dailyLimit));
-          window.localStorage.setItem(
-            "monthlyLimit",
-            JSON.stringify(monthlyLimit)
-          );
-        } else {
-          alert("your work was not saved.");
-        }
-      }
-      updateUserLimits();
-    }
-  }, [dailyLimit, monthlyLimit]);
-
-  const handleCloseModal = (e) => {
-    e.target.closest("dialog").close();
-  };
-
-  const handleSubmitExpense = (e) => {
+  const handleSubmitExpense = async (e) => {
     e.preventDefault();
     const expenseVal = Number.parseInt(e.target.addExpense.value);
     if (expenseVal > 0) {
-      //updates numbers on screen
-      setCurrSpent((prevVal) => prevVal + expenseVal);
+      const updatedUser = await addExpense(
+        location.username,
+        location.password,
+        currSpent + expenseVal
+      );
+
+      if (updatedUser.success) {
+        //updates numbers on screen
+        setCurrSpent(updatedUser.user.data[currYear][currMonth][currDay]);
+        setCurrMonthData(updatedUser.user.data[currYear][currMonth]);
+      } else {
+        alert("your work was not saved.");
+      }
+
       e.target.closest("dialog").close();
     }
   };
