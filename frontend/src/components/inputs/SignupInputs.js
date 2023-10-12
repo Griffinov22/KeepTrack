@@ -8,7 +8,7 @@ import SubmitBtnOval from "../buttons/SubmitBtnOval";
 const SignupInputs = ({ children }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [showToolTip, setShowToolTip] = useState({
     monthlySpending: false,
     dailySpending: false,
@@ -17,28 +17,36 @@ const SignupInputs = ({ children }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
-    const [username, password, upperLimit, dailyLimit] =
+    const [username, password, monthlyLimit, dailyLimit] =
       form.querySelectorAll("input");
     //validation
     if (
       username.value &&
       password.value &&
-      upperLimit.value &&
+      monthlyLimit.value &&
       dailyLimit.value
     ) {
-      const createdUser = await createUser(
-        username.value,
-        password.value,
-        upperLimit.value,
-        dailyLimit.value
-      );
-      if (Object.hasOwn(createdUser, "error")) {
-        setError(createUser.error);
+      if (dailyLimit.value > monthlyLimit.value) {
+        setErrorMsg(
+          "Your daily spending limit must be lower than your monthly allowance"
+        );
+        setLoading(false);
       } else {
-        navigate("/dashboard", { state: createdUser });
+        const createdUser = await createUser(
+          username.value,
+          password.value,
+          monthlyLimit.value,
+          dailyLimit.value
+        );
+        if (Object.hasOwn(createdUser, "error")) {
+          setErrorMsg(createdUser.error);
+          setLoading(false);
+        } else {
+          navigate("/dashboard", { state: createdUser });
+        }
       }
     } else {
-      setError("All values are required to setup an account");
+      setErrorMsg("All values are required to setup an account");
       setLoading(false);
     }
   };
@@ -93,8 +101,8 @@ const SignupInputs = ({ children }) => {
         </div>
         <input
           type="number"
-          name="upperLimit"
-          placeholder="Upper Limit..."
+          name="monthlyLimit"
+          placeholder="Monthly Limit..."
           min="0"
           max="50000"
           required
@@ -129,7 +137,11 @@ in one day."
           max="1000"
           required
         />
-        {error !== "" && <div>{error}</div>}
+        {errorMsg && (
+          <span className="error" style={{ textAlign: "center" }}>
+            {errorMsg}
+          </span>
+        )}
       </div>
       <SubmitBtnOval
         text={loading ? loadingDiv : "submit"}
