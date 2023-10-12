@@ -3,9 +3,12 @@ import "../../css/App.css";
 import Tooltip from "../tooltips/ToolTip";
 import { createUser } from "../../helpers/ServerHelpers";
 import { useNavigate } from "react-router-dom";
+import SubmitBtnOval from "../buttons/SubmitBtnOval";
 
 const SignupInputs = ({ children }) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [showToolTip, setShowToolTip] = useState({
     monthlySpending: false,
     dailySpending: false,
@@ -29,10 +32,22 @@ const SignupInputs = ({ children }) => {
         upperLimit.value,
         dailyLimit.value
       );
-
-      navigate("/dashboard", { state: createdUser });
+      if (Object.hasOwn(createdUser, "error")) {
+        setError(createUser.error);
+      } else {
+        navigate("/dashboard", { state: createdUser });
+      }
+    } else {
+      setError("All values are required to setup an account");
+      setLoading(false);
     }
   };
+
+  const handleClick = (e) => {
+    setLoading(true);
+  };
+
+  const loadingDiv = <div className="loading-div" aria-label="loading"></div>;
 
   return (
     <form className="login-input-wrapper" onSubmit={handleSubmit}>
@@ -114,8 +129,12 @@ in one day."
           max="1000"
           required
         />
+        {error !== "" && <div>${error}</div>}
       </div>
-      {children}
+      <SubmitBtnOval
+        text={loading ? loadingDiv : "submit"}
+        onClick={handleClick}
+      />
     </form>
   );
 };

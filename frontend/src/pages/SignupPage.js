@@ -16,9 +16,7 @@ const LoginPage = () => {
   return (
     <div className="login-wrapper">
       <MainHeader text="A couple questions to setup your profile" />
-      <SignupInputs>
-        <SubmitBtnOval />
-      </SignupInputs>
+      <SignupInputs />
       <DescriptionFlex
         ImgUrl="Images/shopping-cart.svg"
         ImgLeftOrRight="left"

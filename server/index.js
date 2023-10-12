@@ -43,6 +43,10 @@ app.post("/login", async ({ body }, res) => {
 
 app.post("/signup", async ({ body }, res) => {
   if (body.username && body.password && body.monthlyLimit && body.dailyLimit) {
+    if (UserModel.findOne({ username: body.username })) {
+      res.json({ error: "That username is already in use" });
+    }
+
     const newUser = await UserModel.create({
       username: body.username,
       password: body.password,
