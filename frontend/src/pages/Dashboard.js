@@ -31,10 +31,8 @@ const Dashboard = ({ setLoggedIn }) => {
     } else {
       //removes login button from rendering in header
       async function setDashboard() {
-        console.log(location);
         const foundUser = await getUser(location.username, location.password);
         if (foundUser) {
-          console.log(foundUser);
           setIsLoading(false);
           setLoggedIn(true);
           setCurrSpent(foundUser.data[currYear][currMonth][currDay]);
@@ -162,6 +160,7 @@ const Dashboard = ({ setLoggedIn }) => {
               setDailyLimit={setDailyLimit}
               monthlyLimit={monthlyLimit}
               setMonthlyLimit={setMonthlyLimit}
+              location={location}
             />
           </div>
 

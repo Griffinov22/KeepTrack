@@ -1,6 +1,7 @@
 import React from "react";
 import "../../css/App.css";
 import ExpenseDialog from "./ExpenseDialog";
+import { addExpense, setUserLimits } from "../../helpers/ServerHelpers";
 
 const RedrawDialogs = ({
   currDate,
@@ -11,6 +12,7 @@ const RedrawDialogs = ({
   monthlyLimit,
   setMonthlyLimit,
   setDailyLimit,
+  location,
 }) => {
   const handleRedrawModalClick = (e) => {
     const expenseModal = document.getElementById("redraw-modal");
@@ -32,29 +34,59 @@ const RedrawDialogs = ({
     }
   };
 
-  const handleSubmitExpense = (e) => {
+  const handleSubmitExpense = async (e) => {
     e.preventDefault();
     const expenseVal = Number.parseInt(e.target.addExpense.value);
     if (expenseVal >= 0) {
-      e.target.closest("dialog").close();
+      //using expense api to set expense
+      const updatedUser = await addExpense(
+        location.username,
+        location.password,
+        expenseVal
+      );
+      if (updatedUser.success) {
+        e.target.closest("dialog").close();
+      } else {
+        alert("An error occured setting your expenses.");
+      }
     }
   };
 
-  const handleSubmitAllowance = (e) => {
+  const handleSubmitAllowance = async (e) => {
     e.preventDefault();
-    const dailyAllowance = Number.parseInt(e.target.dailyAllowance.value);
-    const monthlyAllowance = Number.parseInt(e.target.monthlyAllowance.value);
+    let dailyAllowance = Number.parseInt(e.target.dailyAllowance.value);
+    //if no dailyAllowance put into input tag => default to old value
+    if (!dailyAllowance) {
+      dailyAllowance = dailyLimit;
+    }
+
+    let monthlyAllowance = Number.parseInt(e.target.monthlyAllowance.value);
+    //if no monthlyAllowance put into input tag => default to old value
+    if (!monthlyAllowance) {
+      monthlyAllowance = monthlyLimit;
+    }
     //validation
     if (
       monthlyAllowance >= dailyAllowance &&
       monthlyAllowance >= 0 &&
       dailyAllowance >= 0
     ) {
-      //close dialog
       setMonthlyLimit(monthlyAllowance);
       setDailyLimit(dailyAllowance);
-      e.target.reset();
-      e.target.closest("dialog").close();
+      //database change
+      const updatedUser = await setUserLimits(
+        location.username,
+        location.password,
+        dailyAllowance,
+        monthlyAllowance
+      );
+      if (updatedUser.success) {
+        console.log(dailyAllowance, monthlyAllowance);
+        e.target.reset();
+        e.target.closest("dialog").close();
+      } else {
+        alert("An error occured setting your allowance limits.");
+      }
     }
   };
 
