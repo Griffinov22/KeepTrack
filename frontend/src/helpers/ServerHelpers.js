@@ -31,6 +31,21 @@ export const createUser = async (
   return createdUser;
 };
 
+export const getUser = async (username, password) => {
+  const tryFetch = await fetch(
+    `${process.env.REACT_APP_BASE_API_KEY}/getuser`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    }
+  );
+  const fetchedUser = await tryFetch.json();
+  return fetchedUser;
+};
+
 export const addExpense = async (username, password, expense) => {
   const updateUser = await fetch(
     `${process.env.REACT_APP_BASE_API_KEY}/addexpense`,

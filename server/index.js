@@ -35,7 +35,7 @@ app.post("/login", async ({ body }, res) => {
       await foundUser.save();
     }
 
-    res.json(foundUser);
+    res.json({ username: foundUser.username, password: foundUser.password });
   } else {
     res.json({ error: "could not find profile with that username / password" });
   }
@@ -53,6 +53,22 @@ app.post("/signup", async ({ body }, res) => {
     res.json({ success: true, user: newUser });
   } else {
     res.json({ error: "Did not receive username and password" });
+  }
+});
+
+app.post("/getuser", async ({ body }, res) => {
+  if (body.username && body.password) {
+    const foundUser = await UserModel.findOne({
+      username: body.username,
+      password: body.password,
+    });
+    if (foundUser) {
+      res.json(foundUser);
+    } else {
+      res.json({ error: "could not profile data" });
+    }
+  } else {
+    res.json({ error: "username or password was not given" });
   }
 });
 
