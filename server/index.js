@@ -53,7 +53,7 @@ app.post("/signup", async ({ body }, res) => {
     res.json({
       success: true,
       username: newUser.username,
-      password: newUsername.password,
+      password: newUser.password,
     });
   } else {
     res.json({ error: "Did not receive username and password" });
