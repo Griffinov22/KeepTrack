@@ -129,7 +129,7 @@ in one day."
           max="1000"
           required
         />
-        {error !== "" && <div>${error}</div>}
+        {error !== "" && <div>{error}</div>}
       </div>
       <SubmitBtnOval
         text={loading ? loadingDiv : "submit"}
