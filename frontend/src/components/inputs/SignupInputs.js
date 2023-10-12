@@ -30,7 +30,7 @@ const SignupInputs = ({ children }) => {
         dailyLimit.value
       );
 
-      navigate("/dashboard", { state: createdUser.user });
+      navigate("/dashboard", { state: createdUser });
     }
   };
 

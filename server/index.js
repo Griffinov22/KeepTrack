@@ -50,7 +50,11 @@ app.post("/signup", async ({ body }, res) => {
       dailyLimit: body.dailyLimit,
     });
 
-    res.json({ success: true, user: newUser });
+    res.json({
+      success: true,
+      username: newUser.username,
+      password: newUsername.password,
+    });
   } else {
     res.json({ error: "Did not receive username and password" });
   }
