@@ -150,6 +150,7 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
+  padding-bottom: 0.75rem;
 }
 /* css override for h1 and .footer-text */
 footer * {
