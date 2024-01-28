@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import "../css/App.css";
 import MainHeader from "../components/MainHeader";
 import DescriptionFlex from "../components/DescriptionFlex";
 import UniversalBtnOval from "../components/buttons/LinkBtnOval";
-const LandingPage = ({ setLoggedIn }) => {
+import { UserContext } from "../contexts/UserProvider";
+const LandingPage = () => {
+  const { setLoggedIn } = useContext(UserContext);
+
   useEffect(() => {
     setLoggedIn(false);
   });

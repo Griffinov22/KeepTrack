@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addExpense, setUserLimits, getUser } from "../helpers/ServerHelpers";
 import ExpenseDialog from "../components/dialogs/ExpenseDialog";
@@ -6,8 +6,11 @@ import "../css/App.css";
 import Calendar from "../components/Calendar";
 import Stats from "../components/Stats";
 import RedrawDialogs from "../components/dialogs/RedrawDialogs";
+import { UserContext } from "../contexts/UserProvider";
 
-const Dashboard = ({ setLoggedIn }) => {
+const Dashboard = () => {
+  const { setLoggedIn } = useContext(UserContext);
+
   const navigate = useNavigate();
   const location = useLocation().state;
   const [isLoading, setIsLoading] = useState(true);

@@ -125,5 +125,5 @@ app.post("/setLimits", async ({ body }, res) => {
 });
 
 app.listen(process.env.PORT || 3001, () => {
-  console.log("successfully started server");
+  console.log("successfully started server at localhost:3001");
 });
