@@ -37,7 +37,12 @@ const Dashboard = ({ setLoggedIn }) => {
           setLoggedIn(true);
           setCurrSpent(foundUser.data[currYear][currMonth][currDay]);
           setCurrMonthData(foundUser.data[currYear][currMonth]);
-          setPrevMonthData(foundUser.data[currYear][currMonth - 1]);
+          if (currMonth - 1 === 0) {
+            //the prev month is December from the previous year
+            setPrevMonthData(foundUser.data[currYear - 1][12]);
+          } else {
+            setPrevMonthData(foundUser.data[currYear][currMonth - 1]);
+          }
           setNextMonthData(foundUser.data[currYear][currMonth + 1]);
           setMonthlyLimit(foundUser.monthlyLimit);
           setDailyLimit(foundUser.dailyLimit);
@@ -47,29 +52,7 @@ const Dashboard = ({ setLoggedIn }) => {
       }
       setDashboard();
     }
-  }, []);
-
-  //daily and monthly limit change
-  // useEffect(() => {
-  //   if (!location) {
-  //     navigate("/unauthorized", { state: { error: "you have not logged in" } });
-  //   } else {
-  //     async function updateUserLimits() {
-  //       const updatedUser = await setUserLimits(
-  //         location.username,
-  //         location.password,
-  //         dailyLimit,
-  //         monthlyLimit
-  //       );
-  //       if (updatedUser.success) {
-  //         //pass
-  //       } else {
-  //         alert("your work was not saved.");
-  //       }
-  //     }
-  //     updateUserLimits();
-  //   }
-  // }, [dailyLimit, monthlyLimit]);
+  }, [currSpent]);
 
   const handleCloseModal = (e) => {
     e.target.closest("dialog").close();
@@ -86,11 +69,7 @@ const Dashboard = ({ setLoggedIn }) => {
     e.preventDefault();
     const expenseVal = Number.parseInt(e.target.addExpense.value);
     if (expenseVal > 0) {
-      const updatedUser = await addExpense(
-        location.username,
-        location.password,
-        currSpent + expenseVal
-      );
+      const updatedUser = await addExpense(location.username, location.password, currSpent + expenseVal);
 
       if (updatedUser.success) {
         //updates numbers on screen
@@ -114,16 +93,7 @@ const Dashboard = ({ setLoggedIn }) => {
         </div>
         <div className="money-wrapper cal-width">
           {/* todays spending */}
-          <h2
-            id="curr-money"
-            className={
-              currSpent > dailyLimit
-                ? "fail-color"
-                : currSpent === dailyLimit
-                ? "okay-color"
-                : "green-color"
-            }
-          >
+          <h2 id="curr-money" className={currSpent > dailyLimit ? "fail-color" : currSpent === dailyLimit ? "okay-color" : "green-color"}>
             {currSpent}
           </h2>
         </div>
@@ -164,12 +134,7 @@ const Dashboard = ({ setLoggedIn }) => {
             />
           </div>
 
-          <Stats
-            monthlyLimit={monthlyLimit}
-            dailyLimit={dailyLimit}
-            currMonthData={currMonthData}
-            currSpent={currSpent}
-          />
+          <Stats monthlyLimit={monthlyLimit} dailyLimit={dailyLimit} currMonthData={currMonthData} currSpent={currSpent} />
         </div>
       </div>
     );

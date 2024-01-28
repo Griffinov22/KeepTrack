@@ -42,41 +42,17 @@ const LoginInputs = ({ children }) => {
   const loadingDiv = <div className="loading-div" aria-label="loading"></div>;
 
   return (
-    <form
-      className={"login-input-wrapper" + (showError ? " error" : "")}
-      method="GET"
-      action="#"
-      onSubmit={handleSubmit}
-    >
+    <form className={"login-input-wrapper" + (showError ? " error" : "")} method="GET" action="#" onSubmit={handleSubmit}>
       <div className="login-group">
         <h4>Username</h4>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username..."
-          maxLength="12"
-          onChange={handleChange}
-        />
+        <input type="text" name="username" placeholder="Username..." maxLength="12" onChange={handleChange} />
       </div>
       <div className="login-group">
         <h4>Password</h4>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password..."
-          maxLength="16"
-          onChange={handleChange}
-        />
+        <input type="password" name="password" placeholder="Password..." maxLength="16" onChange={handleChange} />
       </div>
-      {showError && (
-        <span className="error">
-          The profile with those credentials were not found
-        </span>
-      )}
-      <SubmitBtnOval
-        onClick={handleClick}
-        text={loading ? loadingDiv : "submit"}
-      />
+      {showError && <span className="error">The profile with those credentials were not found</span>}
+      <SubmitBtnOval onClick={handleClick} text={loading ? loadingDiv : "submit"} />
     </form>
   );
 };

@@ -43,6 +43,10 @@ main {
   flex-grow: 1;
 }
 
+button {
+  cursor: pointer;
+}
+
 .modal {
   position: absolute;
   inset: 0;

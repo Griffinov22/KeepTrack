@@ -1,20 +1,8 @@
 import React, { useState } from "react";
 import "../css/App.css";
-import {
-  getCurrMonth,
-  getFirstDayOfMonth,
-  getMonthDays,
-  getPreviousMonthDays,
-  getNextMonthDays,
-} from "../helpers/CalendarHelper";
+import { getCurrMonth, getFirstDayOfMonth, getMonthDays, getPreviousMonthDays, getNextMonthDays } from "../helpers/CalendarHelper";
 
-const Calendar = ({
-  currSpent,
-  currMonthData,
-  prevMonthData,
-  nextMonthData,
-  dailyLimit,
-}) => {
+const Calendar = ({ currSpent, currMonthData, prevMonthData, nextMonthData, dailyLimit }) => {
   const currDate = new Date();
   const currDay = currDate.getDate();
   const currMonthString = getCurrMonth();
@@ -58,12 +46,7 @@ const Calendar = ({
           <div
             className={
               "day-container " +
-              (currDay >= day &&
-                (currMonthData[day] <= dailyLimit
-                  ? "success-bg"
-                  : currMonthData[day] >= dailyLimit
-                  ? "fail-bg"
-                  : "")) +
+              (currDay >= day && (currMonthData[day] <= dailyLimit ? "success-bg" : currMonthData[day] >= dailyLimit ? "fail-bg" : "")) +
               (currDay < day ? " light-grey-bg" : "")
             }
             key={day}
@@ -71,9 +54,7 @@ const Calendar = ({
             {/* day in month */}
             <time className="day">{day}</time>
             {/* money */}
-            <p className={"day-money " + (currDay === day ? "curr-color" : "")}>
-              {day === currDay ? currSpent : currMonthData[day]}
-            </p>
+            <p className={"day-money " + (currDay === day ? "curr-color" : "")}>{day === currDay ? currSpent : currMonthData[day]}</p>
           </div>
         ))}
         {/* next month days */}

@@ -39,11 +39,8 @@ const RedrawDialogs = ({
     const expenseVal = Number.parseInt(e.target.addExpense.value);
     if (expenseVal >= 0) {
       //using expense api to set expense
-      const updatedUser = await addExpense(
-        location.username,
-        location.password,
-        expenseVal
-      );
+      const updatedUser = await addExpense(location.username, location.password, expenseVal);
+      setCurrSpent(expenseVal);
       if (updatedUser.success) {
         e.target.closest("dialog").close();
       } else {
@@ -66,20 +63,11 @@ const RedrawDialogs = ({
       monthlyAllowance = monthlyLimit;
     }
     //validation
-    if (
-      monthlyAllowance >= dailyAllowance &&
-      monthlyAllowance >= 0 &&
-      dailyAllowance >= 0
-    ) {
+    if (monthlyAllowance >= dailyAllowance && monthlyAllowance >= 0 && dailyAllowance >= 0) {
       setMonthlyLimit(monthlyAllowance);
       setDailyLimit(dailyAllowance);
       //database change
-      const updatedUser = await setUserLimits(
-        location.username,
-        location.password,
-        dailyAllowance,
-        monthlyAllowance
-      );
+      const updatedUser = await setUserLimits(location.username, location.password, dailyAllowance, monthlyAllowance);
       if (updatedUser.success) {
         console.log(dailyAllowance, monthlyAllowance);
         e.target.reset();
@@ -90,17 +78,9 @@ const RedrawDialogs = ({
     }
   };
 
-  const handleExpenseChange = (e) => {
-    e.target.value >= 0 && setCurrSpent(Number(e.target.value));
-  };
-
   return (
     <>
-      <dialog
-        id="redraw-modal"
-        className="modal primary-bg"
-        onClick={handleRedrawModalClick}
-      >
+      <dialog id="redraw-modal" className="modal primary-bg" onClick={handleRedrawModalClick}>
         <div className="modal-container modal-padding">
           <h4>What needs to change? </h4>
           <div className="flex-col modal-btn-div">
@@ -114,10 +94,7 @@ const RedrawDialogs = ({
         </div>
       </dialog>
       {/* correct todays expense dialog */}
-      <dialog
-        id="correct-expense-dialog"
-        className="modal modal-padding secondary-bg"
-      >
+      <dialog id="correct-expense-dialog" className="modal modal-padding secondary-bg">
         <div className="modal-header">
           <h4>Correct Today's Expense:</h4>
         </div>
@@ -125,13 +102,7 @@ const RedrawDialogs = ({
           <form className="modal-form" onSubmit={handleSubmitExpense}>
             <div className="flex-evenly pb-2">
               <span className="dollar-sign white-color">$</span>
-              <input
-                type="number"
-                min="0"
-                name="addExpense"
-                value={currSpent}
-                onChange={handleExpenseChange}
-              />
+              <input type="number" min="0" name="addExpense" defaultValue={currSpent} />
               <p></p>
             </div>
 
@@ -144,11 +115,7 @@ const RedrawDialogs = ({
               <button className="sm-oval green-bg" type="submit">
                 Accept
               </button>
-              <button
-                type="button"
-                className="sm-oval fail-100-bg"
-                onClick={handleCloseModal}
-              >
+              <button type="button" className="sm-oval fail-100-bg" onClick={handleCloseModal}>
                 Close
               </button>
             </div>
@@ -156,10 +123,7 @@ const RedrawDialogs = ({
         </div>
       </dialog>
       {/* correct alowance dialog */}
-      <dialog
-        id="allowance-dialog"
-        className="modal modal-padding secondary-bg"
-      >
+      <dialog id="allowance-dialog" className="modal modal-padding secondary-bg">
         <div className="modal-header">
           <h4>Correct Allowance:</h4>
         </div>
@@ -169,24 +133,14 @@ const RedrawDialogs = ({
               <h4>Daily:</h4>
               <div className="modal-allowance-div">
                 <span className="dollar-sign white-color">$</span>
-                <input
-                  type="number"
-                  min="0"
-                  name="dailyAllowance"
-                  placeholder={dailyLimit}
-                />
+                <input type="number" min="0" name="dailyAllowance" placeholder={dailyLimit} />
               </div>
             </div>
             <div className="pb-2 flex-row-ends">
               <h4>Monthly:</h4>
               <div className="modal-allowance-div">
                 <span className="dollar-sign white-color">$</span>
-                <input
-                  type="number"
-                  min="0"
-                  name="monthlyAllowance"
-                  placeholder={monthlyLimit}
-                />
+                <input type="number" min="0" name="monthlyAllowance" placeholder={monthlyLimit} />
               </div>
             </div>
 
@@ -198,11 +152,7 @@ const RedrawDialogs = ({
               <button className="sm-oval green-bg" type="submit">
                 Accept
               </button>
-              <button
-                type="button"
-                className="sm-oval fail-100-bg"
-                onClick={handleCloseModal}
-              >
+              <button type="button" className="sm-oval fail-100-bg" onClick={handleCloseModal}>
                 Close
               </button>
             </div>

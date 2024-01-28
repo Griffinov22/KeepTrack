@@ -21,6 +21,8 @@ function getPreviousMonthDays(firstDayOfMonthInt, yearInt, currMonthInt) {
   //returns array of greyed out days of the previous month
   //if first day is Wednesday => [31,30,29] (sun, mon, tues)
 
+  //firstDayOfMonthInt is a an int 1-7 representing the day of the week OF THIS MONTH
+
   //max day of previous month
   let prevMonthMax = new Date(yearInt, currMonthInt, 0).getDate();
   const prevDays = [];
@@ -44,27 +46,8 @@ function getNextMonthDays(prevMonthDaysLength, currMonthLength) {
 }
 
 function getCurrMonth() {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   return months[new Date().getMonth()];
 }
 
-export {
-  getFirstDayOfMonth,
-  getMonthDays,
-  getCurrMonth,
-  getPreviousMonthDays,
-  getNextMonthDays,
-};
+export { getFirstDayOfMonth, getMonthDays, getCurrMonth, getPreviousMonthDays, getNextMonthDays };
